@@ -12,20 +12,36 @@ export class BitcoinWallet implements Wallet {
 
   constructor(seed: Buffer) {
     const network = bitcoin.networks.bitcoin;
-
-    // Derive HD wallet using BIP32
     const root = BIP32Factory.fromSeed(seed, network);
-    // Derive path m/44'/0'/0'/0/0 (BIP44 for Bitcoin)
     const child = root.derivePath("m/44'/0'/0'/0/0");
     this.keyPair = ECPair.fromPrivateKey(child.privateKey!, { network });
   }
 
-  getAddress(): string {
-    return bitcoin.payments.p2pkh({
-      pubkey: Buffer.from(this.keyPair.publicKey),
-    }).address!;
+  /**
+   * Generates a Bitcoin address.
+   * @param legacy Optional parameter. If true, generates a Legacy (P2PKH) address. Defaults to SegWit (P2WPKH).
+   * @returns The Bitcoin address as a string.
+   */
+  getAddress(legacy?: boolean): string {
+    const network = bitcoin.networks.bitcoin;
+    if (legacy) {
+      // Generate Legacy (P2PKH) address
+      return bitcoin.payments.p2pkh({
+        pubkey: Buffer.from(this.keyPair.publicKey),
+        network,
+      }).address!;
+    } else {
+      // Generate SegWit (P2WPKH) address
+      return bitcoin.payments.p2wpkh({
+        pubkey: Buffer.from(this.keyPair.publicKey),
+        network,
+      }).address!;
+    }
   }
 
+  /**
+   * Returns the private key in Wallet Import Format (WIF).
+   */
   getPrivateKey(): string {
     return this.keyPair.toWIF();
   }
