@@ -9,6 +9,7 @@ import {
   mnemonicToSeed,
 } from "./utils/bip39";
 import { DogecoinWallet } from "./networks/dogecoin";
+import { SolanaWallet } from "./networks/solana";
 
 export default class GenericWallet {
   private mnemonic!: string;
@@ -19,6 +20,7 @@ export default class GenericWallet {
   ripple!: RippleWallet;
   litecoin!: LitecoinWallet;
   dogecoin!: DogecoinWallet;
+  solana!: SolanaWallet;
 
   constructor(mnemonicArg?: string) {
     if (mnemonicArg) {
@@ -34,6 +36,7 @@ export default class GenericWallet {
       this.ripple = new RippleWallet(seed);
       this.litecoin = new LitecoinWallet(seed);
       this.dogecoin = new DogecoinWallet(seed);
+      this.solana = new SolanaWallet(seed);
 
       this.seed = seed;
     } else {
@@ -47,6 +50,7 @@ export default class GenericWallet {
       this.ripple = new RippleWallet(seed);
       this.litecoin = new LitecoinWallet(seed);
       this.dogecoin = new DogecoinWallet(seed);
+      this.solana = new SolanaWallet(seed);
 
       this.seed = seed;
     }

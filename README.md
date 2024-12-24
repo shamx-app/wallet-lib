@@ -26,6 +26,8 @@ This will install crypto libraries for React Native.
 - Ripple
 - Litecoin
 - Dogecoin
+- Solana
+
 ## Usage
 
 ```typescript
