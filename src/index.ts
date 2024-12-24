@@ -10,27 +10,45 @@ import {
 
 export default class GenericWallet {
   private mnemonic!: string;
+  private seed!: Uint8Array;
 
   bitcoin!: BitcoinWallet;
   ethereum!: EthereumWallet;
   ripple!: RippleWallet;
 
-  fromMnemonic(mnemonic: string) {
-    if (!validateMnemonic(mnemonic)) {
-      throw new Error("Invalid mnemonic seed phrase");
+  constructor(mnemonicArg?: string) {
+    if (mnemonicArg) {
+      if (!validateMnemonic(mnemonicArg)) {
+        throw new Error("Invalid mnemonic phrase");
+      }
+
+      this.mnemonic = mnemonicArg;
+      const seed = mnemonicToSeed(mnemonicArg);
+
+      this.bitcoin = new BitcoinWallet(seed);
+      this.ethereum = new EthereumWallet(seed);
+      this.ripple = new RippleWallet(seed);
+
+      this.seed = seed;
+    } else {
+      const mnemonic = generateMnemonic();
+      this.mnemonic = mnemonic;
+
+      const seed = mnemonicToSeed(mnemonic);
+
+      this.bitcoin = new BitcoinWallet(seed);
+      this.ethereum = new EthereumWallet(seed);
+      this.ripple = new RippleWallet(seed);
+
+      this.seed = seed;
     }
-    this.mnemonic = mnemonic;
-    const seed = mnemonicToSeed(mnemonic);
-    // Initialize wallets with the seed
-    // TODO: Implement seed initialization for each wallet
-    return seed;
   }
 
-  new() {
-    this.mnemonic = generateMnemonic();
-    const seed = mnemonicToSeed(this.mnemonic);
-    // Initialize wallets with the seed
-    // TODO: Implement seed initialization for each wallet
-    return seed;
+  getMnemonic() {
+    return this.mnemonic;
+  }
+
+  getSeed() {
+    return this.seed;
   }
 }

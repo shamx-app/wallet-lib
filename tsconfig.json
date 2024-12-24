@@ -1,5 +1,17 @@
 {
+  "exclude": ["node_modules", "dist", "tests"],
   "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "moduleResolution": "node",
+    "removeComments": false,
+    "sourceMap": true,
+    "declaration": true,
+    "declarationDir": "dist",
+    "declarationMap": true,
+    "noEmit": false,
+    
+
     /* Visit https://aka.ms/tsconfig to read more about this file */
 
     /* Projects */
