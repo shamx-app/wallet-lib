@@ -19,30 +19,30 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "18"
-          cache: "npm"
+          cache: "yarn"
 
       # Install dependencies
       - name: Install dependencies
-        run: npm ci
+        run: yarn install --frozen-lockfile
 
       # Run linter
       # - name: Lint the code
-      #   run: npm run lint
+      #   run: yarn lint
 
       # Format the code
       - name: Format the code
-        run: npm run format
+        run: yarn format
 
       # Run tests
       - name: Run tests
-        run: npm test
+        run: yarn test
 
       # Publish to NPM
       - name: Publish to NPM
         if: github.ref_name == 'main' && startsWith(github.event.head_commit.message, 'release:')
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish
+        run: yarn publish
 
       # Verify build
       - name: Verify build
