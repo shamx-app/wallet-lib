@@ -38,7 +38,6 @@
     "bip32": "^5.0.0-rc.0",
     "bip39": "^3.1.0",
     "bitcoinjs-lib": "^6.1.7",
-    "cardano-wallet-js": "^1.4.0",
     "ecpair": "^3.0.0-rc.0",
     "ethers": "^6.13.4",
     "ripple-lib": "^1.10.1",
