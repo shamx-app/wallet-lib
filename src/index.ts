@@ -1,6 +1,7 @@
 import { BitcoinWallet } from "./networks/bitcoin";
 import { EthereumWallet } from "./networks/ethereum";
 import { RippleWallet } from "./networks/ripple";
+import { LitecoinWallet } from "./networks/litecoin";
 
 import {
   generateMnemonic,
@@ -15,6 +16,7 @@ export default class GenericWallet {
   bitcoin!: BitcoinWallet;
   ethereum!: EthereumWallet;
   ripple!: RippleWallet;
+  litecoin!: LitecoinWallet;
 
   constructor(mnemonicArg?: string) {
     if (mnemonicArg) {
@@ -28,6 +30,7 @@ export default class GenericWallet {
       this.bitcoin = new BitcoinWallet(seed);
       this.ethereum = new EthereumWallet(seed);
       this.ripple = new RippleWallet(seed);
+      this.litecoin = new LitecoinWallet(seed);
 
       this.seed = seed;
     } else {
@@ -39,6 +42,7 @@ export default class GenericWallet {
       this.bitcoin = new BitcoinWallet(seed);
       this.ethereum = new EthereumWallet(seed);
       this.ripple = new RippleWallet(seed);
+      this.litecoin = new LitecoinWallet(seed);
 
       this.seed = seed;
     }

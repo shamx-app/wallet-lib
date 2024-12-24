@@ -24,6 +24,7 @@ This will install crypto libraries for React Native.
 - Bitcoin
 - Ethereum
 - Ripple
+- Litecoin
 
 ## Usage
 
@@ -40,7 +41,7 @@ const wallet = new GenericWallet(
 
 const bitcoinAddress = wallet.bitcoin.getAddress();
 const ethereumAddress = wallet.ethereum.getAddress();
-const rippleAddress = wallet.ripple.getAddress();
+// ...
 ```
 
 # License
