@@ -20,6 +20,7 @@ jobs:
         with:
           node-version: "18"
           cache: "yarn"
+          always-auth: true
 
       # Install dependencies
       - name: Install dependencies
@@ -42,6 +43,7 @@ jobs:
         if: github.ref_name == 'main' && startsWith(github.event.head_commit.message, 'release:')
         env:
           YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: yarn publish
 
       # Verify build
