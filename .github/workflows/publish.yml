@@ -39,6 +39,10 @@ jobs:
       - name: Run tests
         run: yarn test
 
+      # Build the library
+      - name: Build the library
+        run: yarn build
+
       # Publish to NPM
       - name: Publish to NPM
         if: github.ref_name == 'main' && startsWith(github.event.head_commit.message, 'release:')
