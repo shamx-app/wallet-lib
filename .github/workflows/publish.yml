@@ -48,5 +48,5 @@ jobs:
       - name: Verify build
         run: |
           if [ ! -f dist/index.js ]; then
-            echo "Build failed: dist/index.js not found." && exit 1;
+            echo "Build failed: dist/index.js not found" && exit 1;
           fi
