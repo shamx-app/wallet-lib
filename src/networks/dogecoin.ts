@@ -1,44 +1,64 @@
-import { payments, networks, Psbt } from "bitcoinjs-lib";
-import { BIP32Factory } from "bip32";
-import * as ecc from "tiny-secp256k1";
+import * as bitcoin from "bitcoinjs-lib";
 import { Wallet } from "../types/wallet";
+import ECPairFactory, { ECPairAPI, ECPairInterface } from "ecpair";
+import * as tinysecp from "tiny-secp256k1";
+import { BIP32Factory as bip32Factory } from "bip32";
 
+/** Dogecoin network configuration parameters */
+const DOGECOIN_NETWORK = {
+  messagePrefix: '\x19Dogecoin Signed Message:\n',
+  bech32: 'doge',
+  bip32: {
+    public: 0x02facafd,
+    private: 0x02fac398
+  },
+  pubKeyHash: 0x1e,
+  scriptHash: 0x16,
+  wif: 0x9e
+} as const;
+
+const ECPair: ECPairAPI = ECPairFactory(tinysecp);
+const BIP32Factory = bip32Factory(tinysecp);
+
+/**
+ * Implementation of the Wallet interface for Dogecoin
+ * Handles address generation and private key management for Dogecoin wallets
+ */
 export class DogecoinWallet implements Wallet {
-  private bip32: any;
-  private network: typeof networks.bitcoin;
+  private readonly keyPair: ECPairInterface;
 
+  /**
+   * Creates a new Dogecoin wallet instance
+   * @param seed - The seed buffer used to generate the wallet
+   */
   constructor(seed: Buffer) {
-    // Initialize BIP32
-    const bip32 = BIP32Factory(ecc);
-    // Derive HD wallet from seed
-    this.bip32 = bip32.fromSeed(seed);
+    const root = BIP32Factory.fromSeed(seed, DOGECOIN_NETWORK);
+    const child = root.derivePath("m/44'/3'/0'/0/0");
 
-    // Dogecoin network parameters
-    this.network = {
-      ...networks.bitcoin,
-      messagePrefix: "\x19Dogecoin Signed Message:\n",
-      bip32: {
-        public: 0x02facafd,
-        private: 0x02fac398,
-      },
-      pubKeyHash: 0x1e,
-      scriptHash: 0x16,
-      wif: 0x9e,
-    };
+    if (!child.privateKey) {
+      throw new Error("Failed to derive private key");
+    }
 
-    // Derive path m/44'/3'/0'/0/0 (BIP44 for Dogecoin)
-    this.bip32 = this.bip32.derivePath("m/44'/3'/0'/0/0");
+    this.keyPair = ECPair.fromPrivateKey(child.privateKey, {
+      network: DOGECOIN_NETWORK
+    });
   }
 
+  /**
+   * Gets the Dogecoin address for this wallet
+   * @returns The Dogecoin address string
+   */
   getAddress(): string {
-    // Generate P2PKH address from public key
-    return payments.p2pkh({
-      pubkey: this.bip32.publicKey,
-      network: this.network,
-    }).address!;
+    const pubkey = Buffer.from(this.keyPair.publicKey);
+
+    return bitcoin.payments.p2pkh({ pubkey, network: DOGECOIN_NETWORK }).address!;
   }
 
+  /**
+   * Gets the private key in WIF format
+   * @returns The wallet's private key in WIF format
+   */
   getPrivateKey(): string {
-    return this.bip32.privateKey.toString("hex");
+    return this.keyPair.toWIF();
   }
 }
