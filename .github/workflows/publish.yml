@@ -1,0 +1,52 @@
+name: Test and Publish to NPM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Set up Node.js environment
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # Run linter
+      # - name: Lint the code
+      #   run: npm run lint
+
+      # Format the code
+      - name: Format the code
+        run: npm run format
+
+      # Run tests
+      - name: Run tests
+        run: npm test
+
+      # Publish to NPM
+      - name: Publish to NPM
+        if: github.ref_name == 'main' && startsWith(github.event.head_commit.message, 'release:')
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish
+
+      # Verify build
+      - name: Verify build
+        run: |
+          if [ ! -f dist/index.js ]; then
+            echo "Build failed: dist/index.js not found." && exit 1;
+          fi
