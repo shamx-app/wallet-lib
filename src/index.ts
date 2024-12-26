@@ -10,6 +10,7 @@ import {
 } from "./utils/bip39";
 import { DogecoinWallet } from "./networks/dogecoin";
 import { SolanaWallet } from "./networks/solana";
+import { TronWallet } from "./networks/tron";
 
 export default class GenericWallet {
   private mnemonic!: string;
@@ -21,6 +22,7 @@ export default class GenericWallet {
   litecoin!: LitecoinWallet;
   dogecoin!: DogecoinWallet;
   solana!: SolanaWallet;
+  tron!: TronWallet;
 
   constructor(mnemonicArg?: string) {
     if (mnemonicArg) {
@@ -37,6 +39,7 @@ export default class GenericWallet {
       this.litecoin = new LitecoinWallet(seed);
       this.dogecoin = new DogecoinWallet(seed);
       this.solana = new SolanaWallet(seed);
+      this.tron = new TronWallet(seed);
 
       this.seed = seed;
     } else {
@@ -51,6 +54,7 @@ export default class GenericWallet {
       this.litecoin = new LitecoinWallet(seed);
       this.dogecoin = new DogecoinWallet(seed);
       this.solana = new SolanaWallet(seed);
+      this.tron = new TronWallet(seed);
 
       this.seed = seed;
     }
