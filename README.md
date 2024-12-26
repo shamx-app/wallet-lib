@@ -27,6 +27,7 @@ This will install crypto libraries for React Native.
 - Litecoin
 - Dogecoin
 - Solana
+- Tron
 
 ## Usage
 
@@ -38,7 +39,7 @@ const wallet = new GenericWallet();
 
 // Or, import an existing wallet from a mnemonic
 const wallet = new GenericWallet(
-  "brisk rude photo million repair crush now hub bitter bacon talk seat"
+  "brisk rude photo million repair crush now hub bitter bacon talk seat",
 );
 
 const bitcoinAddress = wallet.bitcoin.getAddress();
