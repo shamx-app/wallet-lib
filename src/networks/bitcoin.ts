@@ -1,11 +1,11 @@
 import * as bitcoin from "bitcoinjs-lib";
 import { Wallet } from "../types/wallet";
 import ECPairFactory, { ECPairAPI, ECPairInterface } from "ecpair";
-import * as tinysecp from "tiny-secp256k1";
+import ecc from "@bitcoinerlab/secp256k1";
 import * as bip32 from "bip32";
 
-const ECPair: ECPairAPI = ECPairFactory(tinysecp);
-const BIP32Factory = bip32.BIP32Factory(tinysecp);
+const ECPair: ECPairAPI = ECPairFactory(ecc);
+const BIP32Factory = bip32.BIP32Factory(ecc);
 
 export class BitcoinWallet implements Wallet {
   private keyPair: ECPairInterface;

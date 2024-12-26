@@ -1,7 +1,7 @@
 import * as bitcoin from "bitcoinjs-lib";
 import { Wallet } from "../types/wallet";
 import ECPairFactory, { ECPairAPI, ECPairInterface } from "ecpair";
-import * as tinysecp from "tiny-secp256k1";
+import ecc from "@bitcoinerlab/secp256k1";
 import { BIP32Factory as bip32Factory } from "bip32";
 
 /** Litecoin network configuration parameters */
@@ -17,8 +17,8 @@ const LITECOIN_NETWORK = {
   wif: 0xb0,
 } as const;
 
-const ECPair: ECPairAPI = ECPairFactory(tinysecp);
-const BIP32Factory = bip32Factory(tinysecp);
+const ECPair: ECPairAPI = ECPairFactory(ecc);
+const BIP32Factory = bip32Factory(ecc);
 
 /**
  * Implementation of the Wallet interface for Litecoin
