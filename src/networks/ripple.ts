@@ -1,4 +1,4 @@
-import { deriveAddress } from "ripple-lib";
+import { deriveAddress } from "xrpl";
 import { Wallet } from "../types/wallet";
 import { deriveKeypair, generateSeed } from "ripple-keypairs";
 
